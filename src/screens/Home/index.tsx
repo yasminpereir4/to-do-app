@@ -15,34 +15,47 @@ interface HomeProps {}
 
 export const Home: React.FC<HomeProps> = () => {
   const [tasks, setTasks] = useState<string[]>([]);
-  const [isChecked, setIsChecked] = useState(false);
-  const [participantName, setParticipantName] = useState("");
+  const [taskTitle, setTaskTitle] = useState("");
+  const [checkedTasks, setCheckedTasks] = useState<Record<string, boolean>>({});
 
-  function handleParticipantAdd() {
-    if (tasks.includes(participantName)) {
+  function handleTaskAdd() {
+    if (tasks.includes(taskTitle)) {
       return Alert.alert(
         "Comunicado",
-        "Já existe um participante na lista com este nome.",
+        "Já existe uma tarefa na lista com este título.",
       );
     }
-    setTasks(prevState => [...prevState, participantName]);
-    setParticipantName("");
+    setTasks(prevState => [...prevState, taskTitle]);
+    setTaskTitle("");
   }
 
-  function handleParticipantRemove(name: string) {
-    Alert.alert("Atenção", `Deseja remover o participante ${name}?`, [
+  function handleTaskRemove(task: string) {
+    Alert.alert("Atenção", `Deseja remover a tarefa ${task}?`, [
       {
         text: "Sim",
-        onPress: () =>
-          setTasks(prevState =>
-            prevState.filter(participant => participant !== name),
-          ),
+        onPress: () => {
+          setTasks(prevState => prevState.filter(t => t !== task));
+
+          // Remover a tarefa da lista de concluídas
+          setCheckedTasks(prevState => {
+            const updatedTasks = { ...prevState };
+            delete updatedTasks[task]; // Remove do estado de concluídas
+            return updatedTasks;
+          });
+        },
       },
       {
         text: "Não",
         style: "cancel",
       },
     ]);
+  }
+
+  function handleCheckTask(task: string) {
+    setCheckedTasks(prevState => ({
+      ...prevState,
+      [task]: !prevState[task],
+    }));
   }
 
   return (
@@ -59,14 +72,11 @@ export const Home: React.FC<HomeProps> = () => {
             style={styles.input}
             placeholder="Adicione uma nova tarefa"
             placeholderTextColor={"#6B6B6B"}
-            value={participantName}
-            onChangeText={setParticipantName}
+            value={taskTitle}
+            onChangeText={setTaskTitle}
           />
 
-          <TouchableOpacity
-            style={styles.button}
-            onPress={handleParticipantAdd}
-          >
+          <TouchableOpacity style={styles.button} onPress={handleTaskAdd}>
             <Text style={styles.buttonText}>+</Text>
           </TouchableOpacity>
         </View>
@@ -88,7 +98,9 @@ export const Home: React.FC<HomeProps> = () => {
           <View style={{ flexDirection: "row", gap: 8, alignItems: "center" }}>
             <Text style={styles.tasksCreatedLabel}>Concluídas</Text>
             <View style={styles.numberTasksContainer}>
-              <Text style={styles.tasksCreatedNumberLabel}>{tasks.length}</Text>
+              <Text style={styles.tasksCreatedNumberLabel}>
+                {Object.values(checkedTasks).filter(Boolean).length}
+              </Text>
             </View>
           </View>
         </View>
@@ -125,9 +137,9 @@ export const Home: React.FC<HomeProps> = () => {
               <Participant
                 key={item}
                 name={item}
-                isChecked={isChecked}
-                onCheck={() => setIsChecked(true)}
-                onRemove={() => handleParticipantRemove(item)}
+                isChecked={checkedTasks[item] || false} // Verifica se a tarefa está concluída
+                onCheck={() => handleCheckTask(item)}
+                onRemove={() => handleTaskRemove(item)}
               />
             );
           }}

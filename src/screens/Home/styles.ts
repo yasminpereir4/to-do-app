@@ -21,14 +21,14 @@ export const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    height: 56,
+    height: 54,
     padding: 16,
     fontSize: 16,
     color: "#FFF",
     marginRight: 4,
     borderRadius: 5,
     backgroundColor: "#1F1E25",
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: "#0D0D0D",
   },
   buttonText: {
@@ -36,9 +36,9 @@ export const styles = StyleSheet.create({
     fontSize: 24,
   },
   button: {
-    width: 56,
-    height: 56,
-    borderRadius: 5,
+    width: 54,
+    height: 52,
+    borderRadius: 6,
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#1E6F9F",
@@ -63,6 +63,11 @@ export const styles = StyleSheet.create({
   },
   tasksCreatedLabel: {
     color: "#4EA8DE",
+    fontSize: 14,
+    fontWeight: "bold",
+  },
+  tasksFinishedLabel: {
+    color: "#8284FA",
     fontSize: 14,
     fontWeight: "bold",
   },

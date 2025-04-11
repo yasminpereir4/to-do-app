@@ -23,7 +23,15 @@ export const Participant: React.FC<indexProps> = ({
         {isChecked && <Image source={require("../../assets/check.png")} />}
       </TouchableOpacity>
 
-      <Text style={styles.name}>{name}</Text>
+      <Text
+        style={[
+          styles.name,
+          { textDecorationLine: isChecked ? "line-through" : "none" },
+          { color: isChecked ? "#808080" : "#F2F2F2" },
+        ]}
+      >
+        {name}
+      </Text>
 
       <TouchableOpacity onPress={onRemove}>
         <Image source={require("../../assets/trash.png")} />

@@ -1,3 +1,4 @@
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { Fragment, useState } from "react";
 import {
   Alert,
@@ -16,6 +17,7 @@ interface HomeProps {}
 export const Home: React.FC<HomeProps> = () => {
   const [tasks, setTasks] = useState<string[]>([]);
   const [taskTitle, setTaskTitle] = useState("");
+  const [isFocused, setIsFocused] = useState(false);
   const [checkedTasks, setCheckedTasks] = useState<Record<string, boolean>>({});
 
   function handleTaskAdd() {
@@ -69,15 +71,20 @@ export const Home: React.FC<HomeProps> = () => {
 
         <View style={styles.form}>
           <TextInput
-            style={styles.input}
+            style={[
+              styles.input,
+              { borderColor: isFocused ? "#8284FA" : "#0D0D0D" }, // muda a cor da borda no foco
+            ]}
             placeholder="Adicione uma nova tarefa"
             placeholderTextColor={"#6B6B6B"}
             value={taskTitle}
             onChangeText={setTaskTitle}
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
           />
 
           <TouchableOpacity style={styles.button} onPress={handleTaskAdd}>
-            <Text style={styles.buttonText}>+</Text>
+            <Ionicons name="add-circle-outline" size={24} color="white" />
           </TouchableOpacity>
         </View>
 
@@ -96,7 +103,7 @@ export const Home: React.FC<HomeProps> = () => {
           </View>
 
           <View style={{ flexDirection: "row", gap: 8, alignItems: "center" }}>
-            <Text style={styles.tasksCreatedLabel}>Concluídas</Text>
+            <Text style={styles.tasksFinishedLabel}>Concluídas</Text>
             <View style={styles.numberTasksContainer}>
               <Text style={styles.tasksCreatedNumberLabel}>
                 {Object.values(checkedTasks).filter(Boolean).length}
@@ -116,7 +123,6 @@ export const Home: React.FC<HomeProps> = () => {
                   style={{
                     width: "auto",
                     height: 2,
-                    marginTop: 20,
                     backgroundColor: "#333333",
                   }}
                 />

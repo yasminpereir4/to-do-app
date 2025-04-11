@@ -9,6 +9,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
     backgroundColor: "#1F1E25",
+    height: 64,
   },
   name: {
     flex: 1,

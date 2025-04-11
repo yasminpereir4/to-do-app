@@ -21,7 +21,7 @@ export const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    height: 54,
+    height: 52,
     padding: 16,
     fontSize: 16,
     color: "#FFF",
@@ -47,6 +47,7 @@ export const styles = StyleSheet.create({
     width: "100%",
     marginTop: 40,
     marginBottom: 42,
+    alignItems: "center",
     flexDirection: "row",
   },
   listEmptyText: {
